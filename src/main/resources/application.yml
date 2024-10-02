@@ -1,0 +1,18 @@
+app:
+  db: "jpa-postgres"
+  #ObjectDB: jpa-objectdb
+#PosgresSQL: jpa-postgres
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3307/admin
+    username: root
+    password: admin
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true  # Esta opción permite que se generen las tablas
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect  # Dialecto para MySQL

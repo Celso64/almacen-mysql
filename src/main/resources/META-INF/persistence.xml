@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+
+    <persistence-unit name="jpa-mysql">
+        <description>MySQL Persistence Unit</description>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <class>ar.unrn.tp.modelo.Producto</class>
+        <class>ar.unrn.tp.modelo.Categoria</class>
+        <class>ar.unrn.tp.modelo.Marca</class>
+        <class>ar.unrn.tp.modelo.Cliente</class>
+        <class>ar.unrn.tp.modelo.Tarjeta</class>
+        <class>ar.unrn.tp.modelo.Descuento</class>
+        <class>ar.unrn.tp.modelo.DescuentoMarca</class>
+        <class>ar.unrn.tp.modelo.DescuentoTarjeta</class>
+        <class>ar.unrn.tp.modelo.Venta</class>
+
+
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+
+
+        <!-- Aquí tampoco es necesario declarar las clases de entidad -->
+        <properties>
+            <!--            Configuración de la base de datos para PostgreSQL-->
+
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3307/admin"/>
+            <property name="jakarta.persistence.jdbc.user" value="root"/>
+            <property name="jakarta.persistence.jdbc.password" value="admin"/>
+            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+
+
+            <!-- Configuración de Hibernate -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+
+            <!-- Escaneo automático de entidades para Hibernate -->
+            <!--            <property name="hibernate.archive.autodetection" value="class"/>-->
+        </properties>
+    </persistence-unit>
+</persistence>

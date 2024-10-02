@@ -1,0 +1,34 @@
+services:
+  db:
+    container_name: almacen-mysql
+    image: mysql
+    restart: always
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3307:3306"  # Puerto de MySQL mapeado al host (solo lo necesitas si quieres conectarte desde fuera de Docker)
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: admin
+      MYSQL_PASSWORD: admin
+    networks:
+      - mysql-phpmyadmin
+
+  phpmyadmin:
+    depends_on:
+      - db
+    image: phpmyadmin
+    restart: always
+    ports:
+      - "8090:80"  # Acceso a phpMyAdmin en localhost:8090
+    environment:
+      PMA_HOST: db  # El servicio MySQL al que se conecta phpMyAdmin
+      MYSQL_ROOT_PASSWORD: admin
+    networks:
+      - mysql-phpmyadmin
+
+networks:
+  mysql-phpmyadmin:
+
+volumes:
+  db_data:
