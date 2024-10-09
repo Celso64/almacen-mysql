@@ -1,42 +1,51 @@
 package ar.unrn.tp.modelo;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
 @Entity
-@Data
-@NoArgsConstructor
 @Table(name = "venta")
+@NoArgsConstructor
+@Getter
+@Setter(AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Venta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
-    private LocalDateTime fecha;
+    LocalDateTime fecha;
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_id", nullable = false)
-    private Cliente cliente;
+    Cliente cliente;
 
     @ElementCollection
     @CollectionTable(name = "venta_producto_precio",
             joinColumns = @JoinColumn(name = "venta_id"))
     @MapKeyJoinColumn(name = "producto_id") // Clave referida a Producto
     @Column(name = "precio") // Valor escalar Double
-    private Map<Producto, Double> productos = new HashMap<>();
+    Map<Producto, Double> productos = new HashMap<>();
 
-    private Double montoTotal;
+    Double montoTotal;
 
-    public Venta(Cliente cliente, Map<Producto, Double> productos, Double montoTotal) {
+    @Column(name = "factura", unique = true)
+    String factura;
+
+    public Venta(Cliente cliente, Map<Producto, Double> productos, Double montoTotal, String factura) {
         this.fecha = LocalDateTime.now();
         this.cliente = cliente;
         this.productos = productos;
         this.montoTotal = montoTotal;
+        this.factura = factura;
     }
 
 }

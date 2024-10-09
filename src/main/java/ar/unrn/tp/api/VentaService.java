@@ -12,6 +12,8 @@ public interface VentaService {
 // - La tarjeta debe pertenecer al cliente
 //    void realizarVenta(List<Long> productos, Long idTarjeta);
 
+    void realizarVenta(List<Long> productos, Long idTarjeta);
+
     //Devuelve el monto total aplicando los descuentos al día de la fecha
 // validar que no llegue una lista vacía y la tarjeta exista
     float calcularMonto(List<Long> productos, Long idTarjeta);
