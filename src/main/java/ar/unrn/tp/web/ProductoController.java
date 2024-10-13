@@ -5,8 +5,11 @@ import ar.unrn.tp.dto.input.ProductoInput;
 import ar.unrn.tp.dto.output.ProductoOut;
 import ar.unrn.tp.modelo.Categoria;
 import ar.unrn.tp.modelo.Marca;
+import jakarta.persistence.OptimisticLockException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -22,21 +25,33 @@ public class ProductoController {
     private ProductoService productos;
 
     @GetMapping
-    public List<ProductoOut> listAll(){
+    public List<ProductoOut> listAll() {
         return productos.listarProductos().stream().map(ProductoOut::fromModel).toList();
     }
 
     @PostMapping
-    public Boolean addProducto(@RequestBody ProductoInput p){
-        try{
+    public Boolean addProducto(@RequestBody ProductoInput p) {
+        try {
             Marca m = productos.crearMarcaSiNoExiste(p.marca());
             Categoria c = productos.crearCategoriaSiNoExiste(p.categoria());
             productos.crearProducto(p.nombre(), p.descripcion(), p.precio(), c.getId(), m.getId());
-        }catch (Exception e){
+        } catch (Exception e) {
             log.warn(e.getMessage());
             log.warn(Arrays.stream(e.getStackTrace()).map(Object::toString).collect(Collectors.joining("\n")));
             return false;
         }
         return true;
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateProducto(@RequestParam("id") Long id, ProductoInput p) {
+        try {
+            productos.modificarProducto(id, p.nombre(), p.descripcion(), p.precio(), 1L, 1L);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (OptimisticLockException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (Exception e1) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

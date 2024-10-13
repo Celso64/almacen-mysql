@@ -3,6 +3,7 @@ package ar.unrn.tp.api;
 import ar.unrn.tp.modelo.Categoria;
 import ar.unrn.tp.modelo.Marca;
 import ar.unrn.tp.modelo.Producto;
+import jakarta.persistence.OptimisticLockException;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public interface ProductoService {
     void crearProducto(String codigo, String descripcion, float precio, Long IdCategoria, Long idMarca);
 
     //validar que sea un producto existente
-    void modificarProducto(Long idProducto, String codigo, String descripcion, float precio, Long IdCategoría, Long idMarca);
+    void modificarProducto(Long idProducto, String codigo, String descripcion, float precio, Long IdCategoria, Long idMarca) throws OptimisticLockException;
 
     //Devuelve todos los productos
     List<Producto> listarProductos();

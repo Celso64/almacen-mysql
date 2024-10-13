@@ -5,6 +5,7 @@ import ar.unrn.tp.modelo.Categoria;
 import ar.unrn.tp.modelo.Marca;
 import ar.unrn.tp.modelo.Producto;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.OptimisticLockException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
@@ -106,8 +107,13 @@ public class JPAProductoService implements ProductoService {
 
     @Transactional
     @Override
-    public void modificarProducto(Long idProducto, String codigo, String descripcion, float precio, Long IdCategoria, Long idMarca) {
+    public void modificarProducto(Long idProducto, String codigo, String descripcion, float precio, Long IdCategoria, Long idMarca) throws OptimisticLockException {
+
+        Integer versionPrevia = 1; //Traer version desde DTO
         Producto producto = em.find(Producto.class, idProducto);
+
+        if (producto.mismaVersion(versionPrevia)) throw new OptimisticLockException();
+
         Marca nuevaMarca = em.find(Marca.class, idMarca);
         Categoria nuevaCategoria = em.find(Categoria.class, IdCategoria);
         producto.update(new Producto(codigo, descripcion, nuevaMarca, nuevaCategoria, (double) precio));

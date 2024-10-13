@@ -1,25 +1,38 @@
 package ar.unrn.tp.modelo;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
-@Data
-@NoArgsConstructor
 @Table(name = "marca_tarjeta")
+@Getter
+@Setter(AccessLevel.PRIVATE)
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class MarcaTarjeta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
-    private String nombre;
+    String nombre;
+
+    @OneToMany(mappedBy = "marca")
+    Set<Tarjeta> tarjetas;
 
     public MarcaTarjeta(String nombre) {
         this.nombre = nombre;
+    }
+
+    public Boolean esMarca(String marca) {
+        return this.nombre.equalsIgnoreCase(marca);
     }
 
     @Override

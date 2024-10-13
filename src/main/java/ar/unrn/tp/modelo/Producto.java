@@ -28,6 +28,9 @@ public class Producto {
 
     Double precio;
 
+    @Version
+    Integer version;
+
     public Producto(@NonNull String nombre, @NonNull String descripcion, @NonNull Marca marca, @NonNull Categoria categoria, @NonNull Double precio) {
         this.codigo = nombre;
         this.descripcion = descripcion;
@@ -46,5 +49,9 @@ public class Producto {
 
     public String nombreMarca() {
         return this.marca.getNombre().toUpperCase();
+    }
+
+    public Boolean mismaVersion(Integer version) {
+        return this.version.equals(version);
     }
 }

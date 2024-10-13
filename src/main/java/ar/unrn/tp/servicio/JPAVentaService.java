@@ -25,6 +25,7 @@ public class JPAVentaService implements VentaService {
     final ProductoService productoService;
     final DescuentoService descuentoService;
     final ContadorService contadorService;
+
     @PersistenceContext
     EntityManager em;
 
@@ -39,7 +40,7 @@ public class JPAVentaService implements VentaService {
         Double total = 0.0;
         for (Producto p : productoList) {
             DescuentoMarca descuentoMarca = descuentos.getDescuentoMarca(p.getMarca().getNombre());
-            DescuentoTarjeta descuentoTarjeta = descuentos.getDescuentoTarjeta(cliente.getTarjeta(idTarjeta).orElse(new Tarjeta("NULL")).getMarca());
+            DescuentoTarjeta descuentoTarjeta = descuentos.getDescuentoTarjeta(cliente.getTarjeta(idTarjeta).orElse(new Tarjeta("NULL")).getMarca().getNombre());
 
             Double precio = (Objects.isNull(descuentoMarca)) ? p.getPrecio() : descuentoMarca.calcularDescuento(p);
             precio = (Objects.isNull(descuentoTarjeta)) ? precio : descuentoTarjeta.calcularDescuento(p);
@@ -64,10 +65,10 @@ public class JPAVentaService implements VentaService {
         float total = 0.0f;
         for (Producto p : productoList) {
             DescuentoMarca descuentoMarca = descuentos.getDescuentoMarca(p.getMarca().getNombre());
-            DescuentoTarjeta descuentoTarjeta = descuentos.getDescuentoTarjeta(tarjeta.getMarca());
+            DescuentoTarjeta descuentoTarjeta = descuentos.getDescuentoTarjeta(tarjeta.getMarca().getNombre());
 
             Double precio = (Objects.isNull(descuentoMarca)) ? p.getPrecio() : descuentoMarca.calcularDescuento(p.nombreMarca(), p.getPrecio());
-            precio = (Objects.isNull(descuentoTarjeta)) ? precio : descuentoTarjeta.calcularDescuento(tarjeta.getMarca().toUpperCase(), precio);
+            precio = (Objects.isNull(descuentoTarjeta)) ? precio : descuentoTarjeta.calcularDescuento(tarjeta.getMarca().getNombre().toUpperCase(), precio);
 
             total += precio;
         }

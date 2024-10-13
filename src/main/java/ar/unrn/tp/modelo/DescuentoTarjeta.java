@@ -1,36 +1,37 @@
 package ar.unrn.tp.modelo;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Data
+@Getter
+@Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @DiscriminatorValue("DT")
 public class DescuentoTarjeta extends Descuento {
 
     @Id
     @GeneratedValue
-    private Long id;
+    Long id;
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "tarjeta_id", nullable = false)
-    private Tarjeta tarjeta;
+    MarcaTarjeta tarjeta;
 
-    public DescuentoTarjeta(LocalDate fechaInicio, LocalDate fechaFin, Double porcentaje, Tarjeta tarjeta) {
+    public DescuentoTarjeta(LocalDate fechaInicio, LocalDate fechaFin, Double porcentaje, MarcaTarjeta tarjeta) {
         super(fechaInicio, fechaFin, porcentaje);
         this.tarjeta = tarjeta;
     }
 
     @Override
     public String marca() {
-        return this.tarjeta.getMarca();
+        return this.tarjeta.getNombre();
     }
 
     @Override

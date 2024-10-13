@@ -23,9 +23,9 @@ public class JPADescuentoService implements DescuentoService {
 
     @Override
     public void crearDescuentoSobreTotal(String marcaTarjeta, LocalDate fechaDesde, LocalDate fechaHasta, float porcentaje) {
-        TypedQuery<Tarjeta> tarjetaQuery = em.createQuery("select t from Tarjeta t where t.marca = :marca", Tarjeta.class);
+        TypedQuery<MarcaTarjeta> tarjetaQuery = em.createQuery("select mt from MarcaTarjeta mt where mt.nombre = :marca", MarcaTarjeta.class);
         tarjetaQuery.setParameter("marca", marcaTarjeta);
-        Tarjeta tarjeta = tarjetaQuery.getSingleResult();
+        MarcaTarjeta tarjeta = tarjetaQuery.getSingleResult();
         DescuentoTarjeta nuevoDescuento = new DescuentoTarjeta(fechaDesde, fechaHasta, (double) porcentaje, tarjeta);
         em.persist(nuevoDescuento);
     }
