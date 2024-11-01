@@ -3,6 +3,7 @@ package ar.unrn.tp.servicio;
 import ar.unrn.tp.api.ContadorService;
 import ar.unrn.tp.modelo.ContadorAnual;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ public class JPAContadorService implements ContadorService {
     EntityManager em;
 
     @Override
+    @Transactional
     public String getContador() {
         String res;
         Integer esteAnio = LocalDate.now().getYear();
@@ -31,6 +33,7 @@ public class JPAContadorService implements ContadorService {
             ContadorAnual contador = contadorQuery.getSingleResult();
             log.info("Existe contador {}", esteAnio);
             res = contador.getNumeroFactura();
+            log.info("Valor: {}", res);
             em.persist(contador);
         } catch (NoResultException e) {
             ContadorAnual contador = new ContadorAnual(esteAnio);

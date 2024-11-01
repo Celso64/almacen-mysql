@@ -1,6 +1,7 @@
 package ar.unrn.tp.api;
 
 import ar.unrn.tp.modelo.Venta;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.List;
 
@@ -18,6 +19,21 @@ public interface VentaService {
 // validar que no llegue una lista vacía y la tarjeta exista
     float calcularMonto(List<Long> productos, Long idTarjeta);
 
-    //Devuelve todas las ventas realizadas
-    List<Venta> ventas();
+    /**
+     * Devuelve todas las ventas realizadas
+     *
+     * @return Todas las ventas.
+     * @throws JsonProcessingException Si Jackson da error.
+     */
+    List<Venta> ventas() throws JsonProcessingException;
+
+    /**
+     * Devuelve las ultimas ventas de un cliente.
+     *
+     * @param idCliente ID del Cliente.
+     * @param cantidad  Cantidad de ventas a traer desde la ultima.
+     * @return Las ultimas {cantidad} ventas del Cliente con ID {idCliente}.
+     * @throws JsonProcessingException Si Jackson da error.
+     */
+    List<Venta> ventasPorIDCliente(Long idCliente, Integer cantidad) throws JsonProcessingException;
 }

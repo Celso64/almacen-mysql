@@ -23,7 +23,7 @@ public class Cliente {
 
     private String nombre, apellido, email, dni;
 
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private Set<Tarjeta> tarjetas;
 
     public Cliente(String nombre, String apellido, String email, String dni) {

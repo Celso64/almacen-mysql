@@ -46,7 +46,7 @@ public class ProductoController {
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateProducto(@RequestParam("id") Long id, ProductoInput p) {
         try {
-            productos.modificarProducto(id, p.nombre(), p.descripcion(), p.precio(), 1L, 1L);
+            productos.modificarProducto(id, p.nombre(), p.descripcion(), p.precio(), 1L, 1L, p.version());
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (OptimisticLockException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

@@ -27,6 +27,12 @@ services:
     networks:
       - mysql-phpmyadmin
 
+  redis:
+    container_name: almacen-redis
+    image: redis
+    ports:
+      - "3310:6379"
+
 networks:
   mysql-phpmyadmin:
 

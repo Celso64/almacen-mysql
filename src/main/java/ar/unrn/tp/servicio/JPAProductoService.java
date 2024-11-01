@@ -107,12 +107,13 @@ public class JPAProductoService implements ProductoService {
 
     @Transactional
     @Override
-    public void modificarProducto(Long idProducto, String codigo, String descripcion, float precio, Long IdCategoria, Long idMarca) throws OptimisticLockException {
-
-        Integer versionPrevia = 1; //Traer version desde DTO
+    public void modificarProducto(Long idProducto, String codigo, String descripcion, float precio, Long IdCategoria, Long idMarca, Integer version) throws OptimisticLockException {
+        log.info("VERSION INPUT EN BACK: {}", version);
+        //Traer version desde DTO
         Producto producto = em.find(Producto.class, idProducto);
+        log.info("VERSION DB EN BACK: {}", producto.getVersion());
 
-        if (producto.mismaVersion(versionPrevia)) throw new OptimisticLockException();
+        if (!producto.mismaVersion(version)) throw new OptimisticLockException();
 
         Marca nuevaMarca = em.find(Marca.class, idMarca);
         Categoria nuevaCategoria = em.find(Categoria.class, IdCategoria);

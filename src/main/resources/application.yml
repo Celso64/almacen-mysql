@@ -16,3 +16,13 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect  # Dialecto para MySQL
+
+redis:
+  dominio: localhost
+  puerto: 3310
+  pool:
+    conexiones:
+      total: 5
+      inactive:
+        min: 1
+        max: 4
